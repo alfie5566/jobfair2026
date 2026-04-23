@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 校園徵才職缺資訊</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <div id="app">
+        <!-- Header -->
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+            <div class="max-w-6xl mx-auto px-4 h-20 flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 md:py-0">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white font-bold">
+                        J
+                    </div>
+                    <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">
+                        JOB FAIR <span class="text-indigo-600">2026</span>
+                    </h1>
+                </div>
+                
+                <div class="relative w-full md:w-96">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="搜尋廠商、職缺或產業類別..."
+                        class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+                    >
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-6xl mx-auto px-4 py-8">
+            <!-- Intro -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">徵才廠商名錄</h2>
+                <p class="text-slate-500" id="companyCount">載入中...</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <div class="bg-indigo-600 p-6 rounded-2xl text-white shadow-lg shadow-indigo-200">
+                    <p class="text-indigo-100 text-sm font-medium">總職缺類別</p>
+                    <p class="text-3xl font-bold mt-1" id="totalJobs">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-slate-500 text-sm font-medium">主要產業</p>
+                    <p class="text-2xl font-bold text-slate-800 mt-1">資訊諮詢與化學</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-slate-500 text-sm font-medium">核心技術</p>
+                    <p class="text-3xl font-bold text-slate-800 mt-1">ERP / SAP</p>
+                </div>
+            </div>
+
+            <!-- Grid Container -->
+            <div id="jobGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards will be injected here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-20 bg-white rounded-2xl border border-dashed border-slate-300">
+                <div class="mx-auto w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="search" class="w-8 h-8 text-slate-300"></i>
+                </div>
+                <h3 class="text-lg font-medium text-slate-900">找不到相符的內容</h3>
+                <p class="text-slate-500 mt-1">請嘗試更換關鍵字重新搜尋</p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-12 py-10 bg-white border-t border-slate-200 text-center">
+            <p class="text-slate-400 text-sm">© 2026 校園徵才博覽會職缺資訊系統</p>
+        </footer>
+    </div>
+
+    <script>
+        const rawData = [
+            { company: "台灣漢得科技股份有限公司", jobs: ["SAP顧問/2人", "Oracle NS顧問/2人", "產品顧問/2人"], industry: "資訊服務與諮詢" },
+            { company: "南山人壽保險股份有限公司", jobs: ["系統設計師/1人", "資深整合後端工程師/1~2人", "前端工程師/1人", "系統分析師/1人", "資料科學家/1~2名", "JAVA系統分析師/1人"], industry: "金融保險業" },
+            { company: "虎門科技股份有限公司", jobs: ["ERP顧問師/3人", "ERP工程師/3人"], industry: "軟體研發與服務" },
+            { company: "安永諮詢服務股份有限公司", jobs: ["ERP顧問/5人", "CRM顧問/1-2人"], industry: "專業諮詢與顧問" },
+            { company: "德商威內源管理諮詢有限公司", jobs: ["儲備SAP 顧問2人"], industry: "專業諮詢與顧問" },
+            { company: "勤業眾信聯合會計師事務所", jobs: ["SAP顧問"], industry: "專業諮詢與顧問" },
+            { company: "長春石油化學股份有限公司", jobs: ["ERP工程師3位"], industry: "化學工業" }
+        ];
+
+        function renderCards(filter = "") {
+            const grid = document.getElementById('jobGrid');
+            const emptyState = document.getElementById('emptyState');
+            const companyCountText = document.getElementById('companyCount');
+            const totalJobsText = document.getElementById('totalJobs');
+            
+            const filtered = rawData.filter(item => 
+                item.company.toLowerCase().includes(filter.toLowerCase()) ||
+                item.jobs.some(job => job.toLowerCase().includes(filter.toLowerCase())) ||
+                item.industry.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            // Update stats
+            companyCountText.textContent = `目前共有 ${rawData.length} 家優質企業參與，提供多樣化職缺選擇。`;
+            totalJobsText.textContent = rawData.reduce((acc, curr) => acc + curr.jobs.length, 0);
+
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                grid.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                
+                grid.innerHTML = filtered.map(item => `
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-300 flex flex-col">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-indigo-50 rounded-lg">
+                                    <i data-lucide="building-2" class="w-6 h-6 text-indigo-600"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-slate-800 leading-tight">${item.company}</h3>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3 flex-grow">
+                            <div class="flex items-center text-slate-500 text-sm mb-2">
+                                <i data-lucide="briefcase" class="w-4 h-4 mr-2"></i>
+                                <span>開放職缺：</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                ${item.jobs.map(job => `
+                                    <span class="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-full border border-slate-200">
+                                        ${job}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 pt-4 border-t border-slate-50 flex justify-between items-center text-xs">
+                            <div class="flex items-center font-medium text-slate-600">
+                                <i data-lucide="layout-list" class="w-3 h-3 mr-1 text-indigo-500"></i>
+                                ${item.industry}
+                            </div>
+                            <div class="text-slate-400">
+                                資訊更新自 2026
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Re-initialize icons for newly created elements
+                lucide.createIcons();
+            }
+        }
+
+        // Search Input Event
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderCards(e.target.value);
+        });
+
+        // Initialize
+        window.onload = () => {
+            lucide.createIcons();
+            renderCards();
+        };
+    </script>
+</body>
+</html>
