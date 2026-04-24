@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 SAP & Big Data Job Fair 職缺列表</title>
-    <!-- Tailwind CSS CDN -->
+    <title>2026 校園徵才職缺資訊</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
@@ -18,7 +16,6 @@
 <body class="bg-slate-50 text-slate-900">
 
     <div id="app">
-        <!-- Header -->
         <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
             <div class="max-w-6xl mx-auto px-4 h-20 flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 md:py-0">
                 <div class="flex items-center gap-2">
@@ -35,43 +32,37 @@
                     <input 
                         type="text" 
                         id="searchInput"
-                        placeholder="搜尋廠商、職缺或產業類別..."
+                        placeholder="搜尋廠商、職缺或產業..."
                         class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
                     >
                 </div>
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="max-w-6xl mx-auto px-4 py-8">
-            <!-- Intro -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">徵才廠商名錄</h2>
                 <p class="text-slate-500" id="companyCount">載入中...</p>
             </div>
 
-            <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
                 <div class="bg-indigo-600 p-6 rounded-2xl text-white shadow-lg shadow-indigo-200">
-                    <p class="text-indigo-100 text-sm font-medium">總職缺類別</p>
-                    <p class="text-3xl font-bold mt-1" id="totalJobs">0</p>
+                    <p class="text-indigo-100 text-sm font-medium">參與廠商</p>
+                    <p class="text-3xl font-bold mt-1" id="totalCompanies">0</p>
                 </div>
                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <p class="text-slate-500 text-sm font-medium">主要產業</p>
-                    <p class="text-2xl font-bold text-slate-800 mt-1">資訊諮詢與化學</p>
+                    <p class="text-slate-500 text-sm font-medium">更新時間</p>
+                    <p class="text-2xl font-bold text-slate-800 mt-1">今日更新</p>
                 </div>
                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <p class="text-slate-500 text-sm font-medium">核心技術</p>
-                    <p class="text-3xl font-bold text-slate-800 mt-1">ERP / SAP</p>
+                    <p class="text-slate-500 text-sm font-medium">主要技術需求</p>
+                    <p class="text-3xl font-bold text-slate-800 mt-1">ERP / SAP / AI</p>
                 </div>
             </div>
 
-            <!-- Grid Container -->
             <div id="jobGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Cards will be injected here -->
             </div>
 
-            <!-- Empty State -->
             <div id="emptyState" class="hidden text-center py-20 bg-white rounded-2xl border border-dashed border-slate-300">
                 <div class="mx-auto w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
                     <i data-lucide="search" class="w-8 h-8 text-slate-300"></i>
@@ -81,28 +72,29 @@
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="mt-12 py-10 bg-white border-t border-slate-200 text-center">
-            <p class="text-slate-400 text-sm">© 2026 SAP & Big Data Job Fair 職缺列表</p>
+            <p class="text-slate-400 text-sm">© 2026 校園徵才博覽會職缺資訊系統</p>
         </footer>
     </div>
 
     <script>
         const rawData = [
-            { company: "台灣漢得科技股份有限公司", jobs: ["SAP顧問/2人", "Oracle NS顧問/2人", "產品顧問/2人"], industry: "資訊服務與諮詢" },
-            { company: "南山人壽保險股份有限公司", jobs: ["系統設計師/1人", "資深整合後端工程師/1~2人", "前端工程師/1人", "系統分析師/1人", "資料科學家/1~2名", "JAVA系統分析師/1人"], industry: "金融保險業" },
-            { company: "虎門科技股份有限公司", jobs: ["ERP顧問師/3人", "ERP工程師/3人"], industry: "軟體研發與服務" },
-            { company: "安永諮詢服務股份有限公司", jobs: ["ERP顧問/5人", "CRM顧問/1-2人"], industry: "專業諮詢與顧問" },
-            { company: "德商威內源管理諮詢有限公司", jobs: ["儲備SAP 顧問2人"], industry: "專業諮詢與顧問" },
-            { company: "勤業眾信聯合會計師事務所", jobs: ["SAP顧問"], industry: "專業諮詢與顧問" },
-            { company: "長春石油化學股份有限公司", jobs: ["ERP工程師3位"], industry: "化學工業" }
+            { company: "台灣漢得科技股份有限公司", industry: "資訊服務與諮詢", jobs: ["SAP顧問/2人", "Oracle NS顧問/2人", "產品顧問/2人"] },
+            { company: "南山人壽保險股份有限公司", industry: "金融保險業", jobs: ["系統設計師/1人", "資深整合後端工程師/1~2人", "前端工程師/1人", "系統分析師/1人", "資料科學家/1~2名", "JAVA系統分析師/1人"] },
+            { company: "虎門科技股份有限公司", industry: "軟體研發與服務", jobs: ["ERP顧問師/3人", "ERP工程師/3人"] },
+            { company: "安永諮詢服務股份有限公司", industry: "專業諮詢與顧問", jobs: ["ERP顧問/5人", "CRM顧問/1-2人"] },
+            { company: "德商威內源管理諮詢有限公司", industry: "專業諮詢與顧問", jobs: ["儲備SAP 顧問2人"] },
+            { company: "勤業眾信聯合會計師事務所", industry: "專業諮詢與顧問", jobs: ["SAP顧問"] },
+            { company: "長春石油化學股份有限公司", industry: "化學工業", jobs: ["ERP工程師3位"] },
+            { company: "資誠聯合會計師事務所", industry: "專業諮詢與顧問", jobs: ["電腦審計顧問/若干", "資訊安全顧問/若干", "風險管理顧問/若干"] },
+            { company: "資誠創新諮詢有限公司", industry: "專業諮詢與顧問", jobs: ["數位轉型專員", "企業營運績效顧問"] }
         ];
 
         function renderCards(filter = "") {
             const grid = document.getElementById('jobGrid');
             const emptyState = document.getElementById('emptyState');
             const companyCountText = document.getElementById('companyCount');
-            const totalJobsText = document.getElementById('totalJobs');
+            const totalCompaniesText = document.getElementById('totalCompanies');
             
             const filtered = rawData.filter(item => 
                 item.company.toLowerCase().includes(filter.toLowerCase()) ||
@@ -110,9 +102,8 @@
                 item.industry.toLowerCase().includes(filter.toLowerCase())
             );
 
-            // Update stats
             companyCountText.textContent = `目前共有 ${rawData.length} 家優質企業參與，提供多樣化職缺選擇。`;
-            totalJobsText.textContent = rawData.reduce((acc, curr) => acc + curr.jobs.length, 0);
+            totalCompaniesText.textContent = rawData.length;
 
             if (filtered.length === 0) {
                 grid.classList.add('hidden');
@@ -152,23 +143,20 @@
                                 ${item.industry}
                             </div>
                             <div class="text-slate-400">
-                                資訊更新自 2026
+                                2026 Job Fair
                             </div>
                         </div>
                     </div>
                 `).join('');
                 
-                // Re-initialize icons for newly created elements
                 lucide.createIcons();
             }
         }
 
-        // Search Input Event
         document.getElementById('searchInput').addEventListener('input', (e) => {
             renderCards(e.target.value);
         });
 
-        // Initialize
         window.onload = () => {
             lucide.createIcons();
             renderCards();
